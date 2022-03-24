@@ -19,6 +19,8 @@ import {TaskStatuses, TaskType} from './api/todolists-api'
 import LinearProgress from "@mui/material/LinearProgress";
 import {RequestStatusType} from "./state/app-reducer";
 import {ErrorSnackbar} from "./components/ErrorSnackbar";
+import {BrowserRouter, Route, Routes} from "react-router-dom";
+import {Login} from "./features/Login";
 
 export type TasksStateType = {
     [key: string]: Array<TaskType>
@@ -45,61 +47,49 @@ function App() {
     const addTodolist = useCallback((title: string) => {dispatch(addTodolistTC(title))}, [dispatch])
 
     return (
-        <div className="App">
-            <AppBar position="static">
-                <Toolbar>
-                    <IconButton edge="start" color="inherit" aria-label="menu">
-                        <Menu/>
-                    </IconButton>
-                    <Typography variant="h6">
-                        News
-                    </Typography>
-                    <Button color="inherit">Login</Button>
-                </Toolbar>
-            </AppBar>
 
-            {status === 'loading' && <LinearProgress color="secondary"/>}
+            <div className="App">
+                <AppBar position="static">
+                    <Toolbar>
+                        <IconButton edge="start" color="inherit" aria-label="menu">
+                            <Menu/>
+                        </IconButton>
+                        <Typography variant="h6">
+                            News
+                        </Typography>
+                        <Button color="inherit">Login</Button>
+                    </Toolbar>
+                </AppBar>
 
-            <Container fixed>
-                <Grid container style={{padding: '20px'}}>
-                    <AddItemForm addItem={addTodolist}/>
-                </Grid>
-                <Grid container spacing={3}>
-                    {
-                        todolists.map(tl => {
-                            let allTodolistTasks = tasks[tl.id];
+                {status === 'loading' && <LinearProgress color="secondary"/>}
 
-                            return <Grid item key={tl.id}>
-                                <Paper style={{padding: '10px'}}>
-                                    <Todolist
+                <Container fixed>
 
-                                        id={tl.id}
-                                        title={tl.title}
-                                        entityStatus={tl.entityStatus}
-                                        filter={tl.filter}
 
-                                        removeTodolist={removeTodolist}
-                                        changeTodolistTitle={changeTodolistTitle}
-                                        changeFilter={changeFilter}
+                    <Grid container style={{padding: '20px'}}>
+                        <AddItemForm addItem={addTodolist}/>
+                    </Grid>
+                    <Grid container spacing={3}>
+                        {
+                            todolists.map(tl => {
+                                let allTodolistTasks = tasks[tl.id];
 
-                                        tasks={allTodolistTasks}
+                                return <Grid item key={tl.id}>
+                                    <Paper style={{padding: '10px'}}>
+                                        <Todolist id={tl.id} title={tl.title} entityStatus={tl.entityStatus} filter={tl.filter} removeTodolist={removeTodolist} changeTodolistTitle={changeTodolistTitle} changeFilter={changeFilter} tasks={allTodolistTasks} addTask={addTask} removeTask={removeTask} changeTaskTitle={changeTaskTitle} changeTaskStatus={changeStatus} />
+                                    </Paper>
+                                </Grid>
+                            })
+                        }
+                    </Grid>
 
-                                        addTask={addTask}
-                                        removeTask={removeTask}
-                                        changeTaskTitle={changeTaskTitle}
-                                        changeTaskStatus={changeStatus}
+                </Container>
 
-                                    />
-                                </Paper>
-                            </Grid>
-                        })
-                    }
-                </Grid>
-            </Container>
+                <ErrorSnackbar/>
+            </div>
 
-            <ErrorSnackbar/>
-        </div>
-    );
+
+    )
 }
 
-export default App;
+export default App
