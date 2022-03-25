@@ -19,8 +19,7 @@ import {TaskStatuses, TaskType} from './api/todolists-api'
 import LinearProgress from "@mui/material/LinearProgress";
 import {RequestStatusType} from "./state/app-reducer";
 import {ErrorSnackbar} from "./components/ErrorSnackbar";
-import {BrowserRouter, Route, Routes} from "react-router-dom";
-import {Login} from "./features/Login";
+
 
 export type TasksStateType = {
     [key: string]: Array<TaskType>
